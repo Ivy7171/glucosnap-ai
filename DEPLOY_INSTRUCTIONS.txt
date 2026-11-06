@@ -1,0 +1,11 @@
+GlucoSnap AI – Live Gemini Integration
+
+IMPORTANT: This is not just an index.html. It includes a Netlify Function and must be deployed WITH the function.
+
+1. Your GEMINI_API_KEY environment variable is already saved in the existing Netlify project.
+2. In Netlify, open the SAME site and use the Already built it?/upload area to upload this full ZIP.
+3. Open Deploys and verify a deployed Function named analyze appears. If it DOES NOT, drag/drop did not deploy functions and the live AI will NOT work.
+4. Alternative reliable path: install Node.js + Netlify CLI, extract ZIP, then from its folder run: npx netlify-cli login ; npx netlify-cli link ; npx netlify-cli deploy --prod --dir=. --functions=netlify/functions
+5. Open your same public URL. Use Snap a Meal > Choose Photo > Analyze Photo with Gemini AI.
+6. Use non-identifying food images; do not upload patient records or sensitive health photos.
+7. If Gemini responds with a billing/quota or restricted error, check Google AI Studio project billing and quota. Never paste your API key into the frontend.
