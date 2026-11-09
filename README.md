@@ -14,3 +14,8 @@ Features:
 - Demonstrate provider alerts
 
 Built with HTML, CSS, JavaScript, and Gemini AI integration. Hosted using Netlify.
+
+Live App: https://sparkling-rolypoly-98d4a9.netlify.app/
+
+GitHub: https://github.com/Ivy7171/glucosnap-ai
+
