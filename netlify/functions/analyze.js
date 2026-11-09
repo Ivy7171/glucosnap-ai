@@ -17,7 +17,7 @@ exports.handler=async(event)=>{
  if(match[2].length>8_000_000) return reply(413,{error:'Photo is too large; choose a smaller image.'});
  const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),22000);
  try{
-  const model='gemini-2.5-flash';
+  const model='gemini-3.8-flash';
   const request={contents:[{role:'user',parts:[{text:prompts[kind]},{inline_data:{mime_type:match[1],data:match[2]}}]}],generationConfig:{responseMimeType:'application/json',temperature:0.15,maxOutputTokens:1100}};
   const upstream=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,{method:'POST',headers:{'x-goog-api-key':key,'Content-Type':'application/json'},body:JSON.stringify(request),signal:controller.signal});
   const result=await upstream.json().catch(()=>({}));
