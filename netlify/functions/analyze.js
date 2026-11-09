@@ -18,7 +18,7 @@ exports.handler=async(event)=>{
  const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),22000);
  try{
   const model='gemini-3.8-flash';
-  const request={contents:[{role:'user',parts:[{text:prompts[kind]},{inline_data:{mime_type:match[1],data:match[2]}}]}],generationConfig:{responseMimeType:'application/json',temperature:0.15,maxOutputTokens:1100}};
+  const request={contents:[{role:'user',parts:[{text:prompts[kind]},{inline_data:{mime_type:match[1],data:match[2]}}]}],generationConfig:{responseMimeType:'application/json',temperature:0.15,maxOutputTokens:4096}};
   const upstream=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,{method:'POST',headers:{'x-goog-api-key':key,'Content-Type':'application/json'},body:JSON.stringify(request),signal:controller.signal});
   const result=await upstream.json().catch(()=>({}));
   if(!upstream.ok){const message=result.error?.message||'Google Gemini rejected the request.';return reply(upstream.status===429?429:502,{error:`Gemini API error: ${message.slice(0,250)}`})}
