@@ -24,7 +24,17 @@ exports.handler=async(event)=>{
   if(!upstream.ok){const message=result.error?.message||'Google Gemini rejected the request.';return reply(upstream.status===429?429:502,{error:`Gemini API error: ${message.slice(0,250)}`})}
   const raw=(result.candidates?.[0]?.content?.parts||[]).map(x=>x.text||'').join('').trim();
   if(!raw) return reply(502,{error:'Gemini returned no analysis.'});
-  let analysis;try{analysis=JSON.parse(raw)}catch{return reply(502,{error:'Gemini returned invalid JSON.'})}
+let analysis;
+try {
+  const cleaned = raw.trim()
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```$/, '');
+  analysis = JSON.parse(cleaned);
+} catch {
+  return reply(502, {
+    error: 'Gemini response could not be read as JSON. Please retry.'
+  });
+}
   if(typeof analysis!=='object'||!analysis||Array.isArray(analysis)) return reply(502,{error:'Gemini returned an unexpected result.'});
   return reply(200,{result:analysis,model});
  }catch(err){return reply(502,{error:err.name==='AbortError'?'Gemini timed out. Try again.':'Unable to connect to Gemini. Please try again.'})}
